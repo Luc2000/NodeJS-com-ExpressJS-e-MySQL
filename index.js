@@ -1,7 +1,17 @@
-// Responsabilidade de SUBIR O SERVIDOR.
-
 const customExpress = require('./config/customExpress')
+const conexao = require('./infraestrutura/conexao')
+const Tabelas = require('./infraestrutura/tabelas')
 
-const app = customExpress();
+conexao.connect(erro => {
+    if(erro) {
+        console.log(erro)
+    } else {
+        console.log('conectado com sucesso')
+        
+        Tabelas.init(conexao)
+        
+        const app = customExpress()
 
-app.listen(3002, () => console.log('Servidor rodando na porta 3002'));
+        app.listen(3002, () => console.log('Servidor rodando na porta 3002'))
+    }
+})
